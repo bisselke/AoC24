@@ -1,21 +1,58 @@
+import kotlin.math.abs
+
 fun main() {
+    fun pair(input: List<String>): Pair<ArrayList<Int>, ArrayList<Int>> {
+        val firstList = arrayListOf<Int>()
+        val secondList = arrayListOf<Int>()
+
+        for (i in input) {
+            val firstSpace = i.indexOfFirst { it == ' ' }
+            val firstNumber = i.substring(0, firstSpace + 1).trim().toInt()
+            val secondNumber = i.substring(firstSpace + 1).trim().toInt()
+
+            firstList.add(firstNumber)
+            secondList.add(secondNumber)
+        }
+        return Pair(firstList, secondList)
+    }
+
     fun part1(input: List<String>): Int {
-        return input.size
+        val (firstList, secondList) = pair(input)
+        firstList.sort()
+        secondList.sort()
+
+        var totalDifference = 0
+
+        firstList.forEachIndexed { index, firstnumber ->
+            totalDifference += abs(firstnumber - secondList.get(index))
+        }
+
+        return totalDifference
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val (firstList, secondList) = pair(input)
+
+        var similarityScoreTotal = 0
+        for (i in firstList) {
+            val countRight = secondList.count { it == i }
+            val similarityScore = i * countRight
+            similarityScoreTotal += similarityScore
+        }
+        return similarityScoreTotal
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
-
-    // Or read a large test input from the `src/Day01_test.txt` file:
     val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
+
+    part1(testInput).println()
+    check(part1(testInput) == 11)
+
     part1(input).println()
+
+
+    part2(testInput).println()
+    check(part2(testInput) == 31)
+
     part2(input).println()
 }
