@@ -6,9 +6,8 @@ fun main() {
         val secondList = arrayListOf<Int>()
 
         for (i in input) {
-            val firstSpace = i.indexOfFirst { it == ' ' }
-            val firstNumber = i.substring(0, firstSpace + 1).trim().toInt()
-            val secondNumber = i.substring(firstSpace + 1).trim().toInt()
+            val firstNumber = i.substringBefore(" ").toInt()
+            val secondNumber = i.substringAfterLast(" ").toInt()
 
             firstList.add(firstNumber)
             secondList.add(secondNumber)
@@ -24,7 +23,7 @@ fun main() {
         var totalDifference = 0
 
         firstList.forEachIndexed { index, firstnumber ->
-            totalDifference += abs(firstnumber - secondList.get(index))
+            totalDifference += abs(firstnumber - secondList[index])
         }
 
         return totalDifference
